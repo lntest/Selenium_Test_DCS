@@ -12,8 +12,7 @@ import org.junit.runner.RunWith;
                 "com.dept.automation.step_definitions",
                 "com.dept.automation.hooks"
         },
-        plugin = {"pretty","html:target/cucumber-report.html","json:target/cucumber.json"},
-        tags ="@test"
+        plugin = {"pretty","html:target/cucumber-report.html","json:target/cucumber.json"}
 )
 public class TestRunner {
 

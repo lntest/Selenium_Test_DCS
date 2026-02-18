@@ -12,3 +12,4 @@ Feature: login
     Examples:
     |purchase_price|
     |10000         |
+    |2500          |
