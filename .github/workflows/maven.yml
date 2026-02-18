@@ -1,0 +1,52 @@
+name: CI - Maven Cucumber
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Cucumber tags (example: @api or @ui and not @wip)"
+        required: false
+        default: "@api"
+
+jobs:
+  test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Run Cucumber tests
+        shell: pwsh
+        run: |
+          $tags = "${{ github.event.inputs.tags }}"
+          if ([string]::IsNullOrWhiteSpace($tags)) {
+            echo "Running all tests (no tags provided)"
+            mvn -q clean test
+          } else {
+            echo "Running with tags: $tags"
+            mvn -q clean test "-Dcucumber.filter.tags=$tags"
+          }
+
+      - name: Upload Cucumber report (HTML + JSON)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-reports
+          path: |
+            target/cucumber-report.html
+            target/cucumber.json
+            target/**/*.html
+            target/**/*.json
+          if-no-files-found: warn
