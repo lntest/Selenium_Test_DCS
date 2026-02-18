@@ -1,0 +1,4 @@
+com\dept\automation\runner\TestRunner.class
+com\dept\automation\step_definitions\Ui_steps.class
+com\dept\automation\hooks\Hooks.class
+com\dept\automation\step_definitions\Api_steps.class
